@@ -1,0 +1,39 @@
+package com.ticc;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            PessoaDAO pessoaDAO = new PessoaDAO();
+
+            Pessoa pessoa1 = new Pessoa(0, "João Silva", "joao@gmail.com");
+            Pessoa pessoa2 = new Pessoa(0, "Maria Oliveira", "maria@gmail.com");
+
+            pessoaDAO.createPessoa(pessoa1);
+            pessoaDAO.createPessoa(pessoa2);
+
+            List<Pessoa> pessoas = pessoaDAO.listPessoas();
+            System.out.println("Pessoas cadastradas:");
+            for (Pessoa p : pessoas) {
+                System.out.println(p);
+            }
+
+            pessoa1.setNome("João Silva Santos");
+            pessoaDAO.updatePessoa(pessoa1);
+
+            pessoaDAO.deletePessoa(pessoa2.getId());
+
+            pessoas = pessoaDAO.listPessoas();
+            System.out.println("Pessoas após atualização e deleção:");
+            for (Pessoa p : pessoas) {
+                System.out.println(p);
+            }
+
+            pessoaDAO.close();
+        } catch (SQLException e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+}
